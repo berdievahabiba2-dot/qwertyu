@@ -1,18 +1,11 @@
 
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import { Provider } from 'react-redux'
-import { Provider as JotaiProvider } from 'jotai'
-import { reduxStore } from './store/counter'
-import App from './App'
+import { StrictMode } from 'react'
+import { createRoot } from 'react-dom/client'
+import App from './App.jsx'
 import './index.css'
 
-ReactDOM.createRoot(document.getElementById('root')).render(
-  <React.StrictMode>
-    <Provider store={reduxStore}>
-      <JotaiProvider>
-        <App />
-      </JotaiProvider>
-    </Provider>
-  </React.StrictMode>
+createRoot(document.getElementById('root')).render(
+  <StrictMode>
+    <App />
+  </StrictMode>
 )
