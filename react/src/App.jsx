@@ -1,38 +1,50 @@
 import React from 'react'
-import { useForm } from 'react-hook-form'
+import { useFormik } from 'formik'
+import * as Yup from 'yup'
 const App = () => {
-  const {
-    register,
-    handleSubmit,
-    formState:{errors},
-    reset
-  }=useForm()
+  const formik=useFormik({
+    initialValues:{
+      name:"",
+      email:"",
+      password:""
+    },
+    validationSchema:Yup.object({
+      name:Yup.string()
+      .required("Name is required"),
+      email:Yup.string()
+      .required("Email is required"),
+      password:Yup.string()
+      .min(6, 'Password must be at least 6 characters')
+      .required("Password is required"),
 
-  const onsubmit=(data)=>{
-    console.log(data);
-    reset()
-  }
+    }),
+     onSubmit: (values, { resetForm }) => {
+      console.log(values)
+      resetForm()
+    }
+  })
   return (
     <div>
       <h1>Register Form</h1>
-      <form action="" onSubmit={handleSubmit(onsubmit)}>
-        <input type="text" placeholder='name' {...register('name',{
-          required:'Name is required'
-        })} />
-        {errors.name && <p>{errors.name.message}</p>}
+      <form action="" onSubmit={formik.handleSubmit}>
+        <input type="text" name='name' placeholder='name' onChange={formik.handleChange} onBlur={formik.handleBlur} />
+        |{formik.touched.name && formik.errors.name &&(
+          <p style={{ color: 'red' }}>{formik.errors.name}</p>
+        )}
         <br /><br />
-        <input type="text" placeholder='age' {...register('age',{
-          required:'Age is required'
-        })} />
-        {errors.age && <p>{errors.age.message}</p>}
+         <input type="text" name='email' placeholder='email' onChange={formik.handleChange} onBlur={formik.handleBlur} />
+        |{formik.touched.email && formik.errors.email &&(
+          <p style={{ color: 'red' }}>{formik.errors.email}</p>
+        )}
         <br /><br />
-        <input type="text" placeholder='email' {...register('email',{
-          required:'Email is required'
-        })} />
-        {errors.email && <p>{errors.email.message}</p>}
+         <input type="text" name='password' placeholder='password' onChange={formik.handleChange} onBlur={formik.handleBlur} />
+        |{formik.touched.password && formik.errors.password &&(
+          <p style={{ color: 'red' }}>{formik.errors.password}</p>
+        )}
         <br /><br />
-        <button type='submit'>submit</button>
+        <button type="submit">Register</button>
       </form>
+
     </div>
   )
 }
